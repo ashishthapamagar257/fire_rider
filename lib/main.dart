@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:get/get.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:fire_leader/views/auth_page.dart';
-
 import 'firebase_options.dart';
 
 
