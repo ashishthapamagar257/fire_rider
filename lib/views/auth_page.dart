@@ -1,23 +1,40 @@
+import 'package:fire_leader/provider/auth_provider.dart';
+import 'package:fire_leader/provider/other_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:fire_leader/constants/app_sizes.dart';
 
 
-class AuthPage extends StatefulWidget {
+class AuthPage extends ConsumerStatefulWidget {
 
   @override
-  State<AuthPage> createState() => _AuthPageState();
+  ConsumerState<AuthPage> createState() => _AuthPageState();
 }
 
-class _AuthPageState extends State<AuthPage> {
+class _AuthPageState extends ConsumerState<AuthPage> {
   final _formKey = GlobalKey<FormBuilderState>();
 
   @override
   Widget build(BuildContext context) {
+    ref.listen(authProvider, (previous, next) {
+      if(next.hasError && !next.isLoading){
+
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              duration: Duration(seconds: 5),
+            content: Text(next.error.toString())
+            )
+        );
+      }
+    });
+    final state = ref.watch(authProvider);
+    final isLogin = ref.watch(loginProvider);
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login Form'),
+        title: Text(isLogin ? 'Login Form': 'SignUp Form'),
       ),
 
         body: Padding(
@@ -27,6 +44,15 @@ class _AuthPageState extends State<AuthPage> {
               child: ListView(
                 children: [
                   FormBuilderTextField(
+                    name: 'fullname',
+                    decoration: const InputDecoration(labelText: 'FullName'),
+                    validator: FormBuilderValidators.compose([
+                      FormBuilderValidators.required(),
+                    ]),
+                  ),
+                  AppSizes.gapH10,
+
+                  FormBuilderTextField(
                     name: 'email',
                     decoration: const InputDecoration(labelText: 'Email'),
                     validator: FormBuilderValidators.compose([
@@ -35,6 +61,7 @@ class _AuthPageState extends State<AuthPage> {
                     ]),
                   ),
                   AppSizes.gapH10,
+
                   FormBuilderTextField(
                     name: 'password',
                     decoration: const InputDecoration(labelText: 'Password'),
@@ -45,14 +72,26 @@ class _AuthPageState extends State<AuthPage> {
                     ]),
                   ),
                   AppSizes.gapH20,
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.white)
+                    ),
+                    height: 140,
+                    width: double.infinity,
+                    child: Center(child: Text('please select an image')),
+                  ),
                   AppSizes.gapH20,
                   ElevatedButton(
                       onPressed: (){
                         FocusScope.of(context).unfocus();
                         if (_formKey.currentState?.saveAndValidate(focusOnInvalid: false) ?? false) {
-                          print((_formKey.currentState?.value.toString()));
+                          final map = _formKey.currentState!.value;
+                          ref.read(authProvider.notifier).userLogin(
+                              email: map['email'],
+                              password: map['password']
+                          );
                         }
-                      }, child: Text('submit')
+                      }, child: state.isLoading ? CircularProgressIndicator(): Text('submit')
                   )
                 ],
               )
