@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:fire_leader/provider/auth_provider.dart';
 import 'package:fire_leader/provider/other_provider.dart';
 import 'package:flutter/material.dart';
@@ -31,6 +32,7 @@ class _AuthPageState extends ConsumerState<AuthPage> {
     });
     final state = ref.watch(authProvider);
     final isLogin = ref.watch(loginProvider);
+    final image = ref.watch(imageProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -43,7 +45,7 @@ class _AuthPageState extends ConsumerState<AuthPage> {
               key: _formKey,
               child: ListView(
                 children: [
-                  FormBuilderTextField(
+                  if(!isLogin) FormBuilderTextField(
                     name: 'fullname',
                     decoration: const InputDecoration(labelText: 'FullName'),
                     validator: FormBuilderValidators.compose([
@@ -72,13 +74,20 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                     ]),
                   ),
                   AppSizes.gapH20,
-                  Container(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.white)
+                  if(!isLogin) InkWell(
+                    onTap: (){
+                      ref.read(imageProvider.notifier).pickImage();
+                    },
+                    child: Container(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.white)
+                      ),
+                      height: 140,
+                      width: double.infinity,
+                      child: image == null ? Center(child: Text('please select an image'))
+                      : Image.file(File(image.path)),
+
                     ),
-                    height: 140,
-                    width: double.infinity,
-                    child: Center(child: Text('please select an image')),
                   ),
                   AppSizes.gapH20,
                   ElevatedButton(
@@ -92,6 +101,24 @@ class _AuthPageState extends ConsumerState<AuthPage> {
                           );
                         }
                       }, child: state.isLoading ? CircularProgressIndicator(): Text('submit')
+                  ),
+                  AppSizes.gapH16,
+                  Row(
+                    children: [
+                      Text(isLogin ? 'Don\'t have an account': 'Already have an Account'),
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: TextButton(
+                            style: TextButton.styleFrom(
+                              backgroundColor: Colors.white,
+                              foregroundColor: Colors.black,
+                            ),
+                            onPressed: (){
+                          ref.read(loginProvider.notifier).change();
+                        },
+                            child: Text(isLogin ? 'Sign Up': 'Login')),
+                      )
+                    ],
                   )
                 ],
               )
