@@ -5,13 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 
-
-
 class StatusPage extends ConsumerWidget {
   const StatusPage({super.key});
 
   @override
-  Widget build(BuildContext context,ref) {
+  Widget build(BuildContext context, ref) {
     final auth = ref.watch(userStream);
     return auth.when(
         data: (data){
@@ -22,7 +20,7 @@ class StatusPage extends ConsumerWidget {
           }
         },
         error: (err, st) => Center(child: Text('$err')),
-        loading: () => Center(child: CircularProgressIndicator())
+        loading: () => const Center(child: CircularProgressIndicator())
     );
   }
 }

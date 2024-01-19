@@ -1,12 +1,14 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import 'package:image_picker/image_picker.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
-final loginProvider = NotifierProvider<LoginProvider, bool>(()=> LoginProvider());
-class LoginProvider extends Notifier<bool>{
+part 'other_provider.g.dart';
 
+@riverpod
+class ToggleTheme extends _$ToggleTheme {
   @override
-  bool build(){
-    return true;
+  bool build() {
+    return true ;
   }
 
   void change(){
@@ -14,18 +16,48 @@ class LoginProvider extends Notifier<bool>{
   }
 }
 
+final loginProvider =
+NotifierProvider<LoginProvider, bool>(() => LoginProvider());
 
-final imageProvider = NotifierProvider<ImageProvider, XFile?>(()=> ImageProvider());
-class ImageProvider extends Notifier<XFile?>{
-
+class LoginProvider extends Notifier<bool> {
   @override
-  XFile? build(){
-    return null;
+  bool build() {
+    return true;
   }
-void pickImage() async {
-    final ImagePicker picker = ImagePicker();
-    state = await picker.pickImage(source: ImageSource.gallery);
 
+  void change() {
+    state = !state;
+  }
 }
 
+
+final toggleProvider =
+NotifierProvider<ToggleProvider, bool>(() => ToggleProvider());
+
+class ToggleProvider extends Notifier<bool> {
+  @override
+  bool build() {
+    return false;
+  }
+
+  void change() {
+    state = !state;
+  }
+}
+
+
+
+final imageProvider =
+NotifierProvider<ImageProvider, XFile?>(() => ImageProvider());
+
+class ImageProvider extends Notifier<XFile?> {
+  @override
+  XFile? build() {
+    return null;
+  }
+
+  void pickImage() async {
+    final ImagePicker picker = ImagePicker();
+    state = await picker.pickImage(source: ImageSource.gallery);
+  }
 }

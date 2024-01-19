@@ -1,12 +1,11 @@
 
 
-
-import 'package:fire_leader/api_service/api_service.dart';
+import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:fire_leader/api_service/api_service.dart';
+
 
 final apiProvider = AsyncNotifierProvider(() => ApiProvider());
-
 
 class ApiProvider extends AsyncNotifier{
 
@@ -15,9 +14,8 @@ class ApiProvider extends AsyncNotifier{
 
   }
 
-  Future<void> getSearchNews({required String query})async{
+  Future<void> getSearchNews({required String query}) async{
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() => ApiService.getSearchNews(query: query));
   }
 }
-
