@@ -36,34 +36,22 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   get: ^4.6.6
-  flutter_riverpod: ^2.4.6
-  dio: ^5.3.3
-  cached_network_image: ^3.3.0
-  fpdart: ^1.1.0
-  lottie: ^2.7.0
-  flutter_native_splash: ^2.3.5
-  flutter_launcher_icons: ^0.13.1
+  flutter_riverpod: ^2.4.9
+  dio: ^5.4.0
   riverpod_annotation: ^2.3.1
   flutter_form_builder: ^9.1.1
   form_builder_validators: ^9.1.0
-  freezed_annotation: ^2.4.1
-  image_picker: ^1.0.4
-  flutter_rating_bar: ^4.0.1
-  firebase_core: ^2.24.2
-  flutter_chat_types: ^3.6.2
-  firebase_auth: ^4.15.3
-  firebase_storage: ^11.5.6
-  firebase_messaging: ^14.7.9
-  flutter_chat_ui: ^1.6.10
-  cloud_firestore: ^4.13.6
-  flutter_firebase_chat_core: ^1.6.7
-  flutter_local_notifications: ^16.3.0
+  freezed_annotation: any
+
+  json_annotation: ^4.8.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   riverpod_generator: ^2.3.9
-  build_runner: ^2.4.7
+  build_runner: any
+  freezed: any
+  json_serializable: ^6.7.1
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
